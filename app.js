@@ -11,6 +11,11 @@ var divOneEl = document.getElementById('product1');
 var divTwoEl = document.getElementById('product2');
 var divThreeEl = document.getElementById('product3');
 var resultsSectionEl = document.getElementById('results');
+var context = document.getElementById('results-chart').getContext('2d');
+
+// Global chart variables
+var chartData = [];
+var chartLabels = [];
 
 // Object constructor for products
 function Product(filename, id, displayName) {
@@ -52,6 +57,31 @@ Product.prototype.productClick = function(event) {
   }
   if (totalClicks === roundsCount) {
     displayTotals();
+    populateChartLabels(products);
+    populateChartData(products);
+    var chartOptions = {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    };
+
+    var myFirstChart = new Chart(context, {
+      type: 'bar',
+      data: {
+        labels: chartLabels,
+        datasets: [{
+          label: 'Clickthrough rates each product',
+          data: chartData
+          // backgroundColor: chartColors
+        }]
+      },
+      options: chartOptions
+    });
+    // end chart
   }
 };
 
@@ -130,6 +160,20 @@ function displayTotals() {
     divEl.appendChild(paraEl);
     divEl.appendChild(imgEl);
     resultsSectionEl.appendChild(divEl);
+  }
+}
+
+// Create arrays for chart.js
+function populateChartData(productArray) {
+  for (var i = 0; i < productArray.length; i++) {
+    var chartDatum = (products[i].clickCount / products[i].displayCount);
+    chartData.push(chartDatum);
+  }
+}
+function populateChartLabels(productArray) {
+  for (var i = 0; i < productArray.length; i++) {
+    var chartDatum = products[i].id;
+    chartLabels.push(chartDatum);
   }
 }
 

@@ -27,3 +27,9 @@ div.result img {
   width: 300px;
   display: block;
 }
+
+/* making charts */
+canvas.results-chart {
+  max-width: 800px;
+  max-height: 400px;
+}
