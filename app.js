@@ -4,11 +4,13 @@
 var chosenProducts = []; // variable to hold the last chosen products
 var displayNumber = 3; // how many products to show at one time
 var roundsCount = 25; // how many times the user will get a choice of products
+var totalClicks = 0;
 
 // Global DOM variables
 var divOneEl = document.getElementById('product1');
 var divTwoEl = document.getElementById('product2');
 var divThreeEl = document.getElementById('product3');
+var resultsSectionEl = document.getElementById('results');
 
 // Object constructor for products
 function Product(filename, id, displayName) {
@@ -39,8 +41,19 @@ Product.prototype.productClick = function(event) {
   event.stopPropagation(); // if not added, could fire event to any ancestor element
   console.log(this.filename);
   this.clickCount++;
+  totalClicks++;
   console.log(this.id + ' click count is ' + this.clickCount);
+  console.log('Total clicks: ' + totalClicks);
   clearObjects();
+  // Chooses and displays new products while totalClicks is less than roundsCount
+  while (totalClicks < roundsCount) {
+    chooseProduct();
+    displayObjects();
+    break;
+  }
+  if (totalClicks === roundsCount) {
+    displayTotals();
+  }
 };
 
 // Product template
@@ -88,7 +101,7 @@ function chooseProduct() {
 }
 
 // Function that displays objects in DOM
-function displayObjects(chosenProductsArray) {
+function displayObjects() {
   products[chosenProducts[0]].createImage(divOneEl);
   products[chosenProducts[1]].createImage(divTwoEl);
   products[chosenProducts[2]].createImage(divThreeEl);
@@ -106,14 +119,27 @@ divOneEl.addEventListener('click', function() {products[chosenProducts[0]].produ
 divTwoEl.addEventListener('click', function() {products[chosenProducts[1]].productClick(event);}, false);
 divThreeEl.addEventListener('click', function() {products[chosenProducts[2]].productClick(event);}, false);
 
+// After test has run, show images and their totals
+function displayTotals() {
+  for (var index = 0; index < products.length; index++) {
+    var divEl = document.createElement('div');
+    divEl.setAttribute('class', 'result');
+    var imgEl = document.createElement('img');
+    imgEl.setAttribute('src', products[index].filepath);
+    var paraEl = document.createElement('p');
+    paraEl.textContent = ('Clicked: ' + products[index].clickCount + ' / Displayed: ' + products[index].displayCount);
+    divEl.appendChild(paraEl);
+    divEl.appendChild(imgEl);
+    resultsSectionEl.appendChild(divEl);
+  }
+}
+
 // Array of all products
 var products = [bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogDuck, dragon, pen, petSweep, scissors, shark, sweep, tauntaun, unicorn, usb, waterCan, wineGlass]; // all products
 
-// function runTest() {
-//   for (var index = 0; index < roundsCount; index++) {
-//     chooseProduct();
-//     displayObjects(chosenProducts);
-//   }
-// }
-//
-// runTest();
+function runTest() {
+  chooseProduct();
+  displayObjects();
+}
+
+runTest();
