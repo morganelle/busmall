@@ -1,8 +1,8 @@
 /* displaying products */
 div.product {
   display: inline-block;
-  width: 300px;
-  height: 300px;
+  max-width: 300px;
+  max-height: 300px;
 }
 
 div.product:hover {
@@ -10,7 +10,8 @@ div.product:hover {
 }
 
 div.product img {
-  width: 300px;
+  min-width: 300px;
+  height: 300px;
   display: block;
 }
 

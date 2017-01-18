@@ -39,7 +39,6 @@ Product.prototype.removeImage = function() {
 Product.prototype.productClick = function(event) {
   event.preventDefault(); // may be default to load page
   event.stopPropagation(); // if not added, could fire event to any ancestor element
-  console.log(this.filename);
   this.clickCount++;
   totalClicks++;
   console.log(this.id + ' click count is ' + this.clickCount);
