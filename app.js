@@ -5,9 +5,13 @@ var chosenProducts = []; // variable to hold the last chosen products
 var displayNumber = 3; // how many products to show at one time
 var roundsCount = 25; // how many times the user will get a choice of products
 
+// Global DOM variables
+var userChoiceSectionEl = document.getElementById('user-choice');
+
 // Object constructor for products
 function Product(filename, id, displayName) {
   this.filename = filename;
+  this.filepath = 'assets/' + filename;
   this.id = id;
   this.displayName = displayName;
   this.displayCount = 0;
@@ -65,6 +69,20 @@ function chooseProduct() {
   chosenProducts.push(chosenProductsLocal);
   chosenProducts = chosenProducts.reduce(function(a, b) {return a.concat(b);}, []);
   console.log('loop done, chosen products are:  ' + chosenProducts);
+}
+
+// Function that displays objects in dome
+function displayObjects(chosenProductsArray) {
+  console.log('before loop runs');
+  for (var j = 0; j < chosenProductsArray.length; j++) {
+    console.log('loop runs: ' + j);
+    var productDivEl = document.createElement('div');
+    productDivEl.setAttribute('class', 'product');
+    productDivEl.setAttribute('id', chosenProductsArray[j].id);
+    productDivEl.textContent = chosenProductsArray[j].displayName;
+    console.log(productDivEl.textContent);
+    userChoiceSectionEl.appendChild(productDivEl);
+  }
 }
 
 var products = [bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogDuck, dragon, pen, petSweep, scissors, shark, sweep, tauntaun, unicorn, usb, waterCan, wineGlass]; // all products
