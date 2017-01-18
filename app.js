@@ -25,12 +25,14 @@ Product.prototype.createImage = function(divDOM) {
   console.log(this.id + ' display count: ' + this.displayCount);
   var productImageEl = document.createElement('img');
   productImageEl.setAttribute('id', this.id);
+  productImageEl.setAttribute('class', 'product-image');
   productImageEl.setAttribute('src', this.filepath);
   divDOM.appendChild(productImageEl);
 };
-Product.prototype.removeImage = function(divDOM) {
+Product.prototype.removeImage = function() {
   var removeImgEl = document.getElementById(this.id);
-  divDOM.removeChild(removeImgEl);
+  var imgContainerEl1 = removeImgEl.parentNode;
+  imgContainerEl1.removeChild(removeImgEl);
 };
 Product.prototype.productClick = function(event) {
   event.preventDefault(); // may be default to load page
@@ -38,6 +40,7 @@ Product.prototype.productClick = function(event) {
   console.log(this.filename);
   this.clickCount++;
   console.log(this.id + ' click count is ' + this.clickCount);
+  clearObjects();
 };
 
 // Product template
@@ -91,12 +94,12 @@ function displayObjects(chosenProductsArray) {
   products[chosenProducts[2]].createImage(divThreeEl);
 }
 
-// // Function that removes imgs from DOM
-// function clearObjects(chosenProductsArray) {
-//   chosenProductsArray[0].removeImage(divOneEl);
-//   chosenProductsArray[1].removeImage(divTwoEl);
-//   chosenProductsArray[2].removeImage(divThreeEl);
-// }
+// Function that removes imgs from DOM
+function clearObjects() {
+  products[chosenProducts[0]].removeImage();
+  products[chosenProducts[1]].removeImage();
+  products[chosenProducts[2]].removeImage();
+}
 
 // Adds event listeners to three divs in user-test.html
 divOneEl.addEventListener('click', function() {products[chosenProducts[0]].productClick(event);}, false);
