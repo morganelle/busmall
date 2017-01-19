@@ -11,6 +11,11 @@ var divOneEl = document.getElementById('product1');
 var divTwoEl = document.getElementById('product2');
 var divThreeEl = document.getElementById('product3');
 var resultsSectionEl = document.getElementById('results');
+var context = document.getElementById('results-chart').getContext('2d');
+
+// Global chart variables
+var chartData = [];
+var chartLabels = [];
 
 // Object constructor for products
 function Product(filename, id, displayName) {
@@ -24,7 +29,6 @@ function Product(filename, id, displayName) {
 
 Product.prototype.createImage = function(divDOM) {
   this.displayCount++;
-  console.log(this.id + ' display count: ' + this.displayCount);
   var productImageEl = document.createElement('img');
   productImageEl.setAttribute('id', this.id);
   productImageEl.setAttribute('class', 'product-image');
@@ -37,28 +41,50 @@ Product.prototype.removeImage = function() {
   imgContainerEl1.removeChild(removeImgEl);
 };
 Product.prototype.productClick = function(event) {
-  event.preventDefault(); // may be default to load page
-  event.stopPropagation(); // if not added, could fire event to any ancestor element
-  console.log(this.filename);
   this.clickCount++;
   totalClicks++;
-  console.log(this.id + ' click count is ' + this.clickCount);
-  console.log('Total clicks: ' + totalClicks);
-  clearObjects();
+  // clearObjects();
   // Chooses and displays new products while totalClicks is less than roundsCount
   while (totalClicks < roundsCount) {
+    clearObjects();
     chooseProduct();
     displayObjects();
     break;
   }
   if (totalClicks === roundsCount) {
-    displayTotals();
+    displayTotals(products);
+    populateChartLabels(products);
+    populateChartData(products);
+    // chart start
+    var chartOptions = {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    };
+    var myFirstChart = new Chart(context, {
+      type: 'horizontalBar',
+      data: {
+        labels: chartLabels,
+        datasets: [{
+          label: 'Clicks per product',
+          data: chartData,
+          backgroundColor: '#97B6BE',
+          borderColor: '#709BA6',
+          borderWidth: 1
+        }]
+      },
+      options: chartOptions
+    });
+    // end chart
   }
 };
 
 // Product template
 // var name = new Product('filename', 'id', 'description');
-
 var bag = new Product('bag.jpg', 'bag', 'wheely bag');
 var banana = new Product('banana.jpg', 'banana', 'nanner slicer');
 var bathroom = new Product('bathroom.jpg', 'bathroom', 'tablet \'n TP');
@@ -120,17 +146,31 @@ divTwoEl.addEventListener('click', function() {products[chosenProducts[1]].produ
 divThreeEl.addEventListener('click', function() {products[chosenProducts[2]].productClick(event);}, false);
 
 // After test has run, show images and their totals
-function displayTotals() {
-  for (var index = 0; index < products.length; index++) {
+function displayTotals(productArray) {
+  for (var index = 0; index < productArray.length; index++) {
     var divEl = document.createElement('div');
     divEl.setAttribute('class', 'result');
     var imgEl = document.createElement('img');
-    imgEl.setAttribute('src', products[index].filepath);
+    imgEl.setAttribute('src', productArray[index].filepath);
     var paraEl = document.createElement('p');
-    paraEl.textContent = ('Clicked: ' + products[index].clickCount + ' / Displayed: ' + products[index].displayCount);
+    paraEl.textContent = ('Clicked: ' + productArray[index].clickCount + ' / Displayed: ' + productArray[index].displayCount);
     divEl.appendChild(paraEl);
     divEl.appendChild(imgEl);
     resultsSectionEl.appendChild(divEl);
+  }
+}
+
+// Create arrays for chart.js
+function populateChartData(productArray) {
+  for (var i = 0; i < productArray.length; i++) {
+    var chartDatum = (productArray[i].clickCount);
+    chartData.push(chartDatum);
+  }
+}
+function populateChartLabels(productArray) {
+  for (var i = 0; i < productArray.length; i++) {
+    var chartDatum = productArray[i].id;
+    chartLabels.push(chartDatum);
   }
 }
 

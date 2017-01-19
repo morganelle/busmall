@@ -4,15 +4,21 @@
     <meta charset="utf-8">
     <title>Focus Group test</title>
     <link rel="stylesheet" href="style.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
   </head>
   <body>
     <header>
-      <h1>Busmall focus group test</h1>
+      <h1>Busmall</h1>
+      <h2>focus group test</h2>
     </header>
     <section id="user-choice">
+      <p id="text-instructions">Click on the product you would most like to buy.</p>
       <div id="product1" class="product"></div>
       <div id="product2" class="product"></div>
       <div id="product3" class="product"></div>
+    </section>
+    <section id="charts">
+      <canvas id="results-chart"></canvas>
     </section>
     <section id="results">
     </section>
