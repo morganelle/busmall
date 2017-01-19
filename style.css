@@ -29,7 +29,9 @@ div.result img {
 }
 
 /* making charts */
-canvas.results-chart {
+canvas#results-chart {
   max-width: 800px;
   max-height: 400px;
 }
+
+/* https://coolors.co/4b4e50-fdfdff-cbcabf-709ba6-637787
