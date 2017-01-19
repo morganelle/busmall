@@ -70,7 +70,7 @@ Product.prototype.productClick = function(event) {
       data: {
         labels: chartLabels,
         datasets: [{
-          label: 'Clickthrough rates each product',
+          label: 'Clicks per product',
           data: chartData,
           backgroundColor: '#97B6BE',
           borderColor: '#709BA6',
@@ -163,7 +163,7 @@ function displayTotals(productArray) {
 // Create arrays for chart.js
 function populateChartData(productArray) {
   for (var i = 0; i < productArray.length; i++) {
-    var chartDatum = (productArray[i].clickCount / productArray[i].displayCount);
+    var chartDatum = (productArray[i].clickCount);
     chartData.push(chartDatum);
   }
 }

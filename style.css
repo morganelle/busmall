@@ -1,8 +1,35 @@
+@import url('https://fonts.googleapis.com/css?family=Bungee+Shade|Varela+Round');
+
+* {
+  font-family: 'Varela Round', sans-serif;
+}
+
+/* header styles */
+header {
+  padding: 30px 10px;
+}
+
+header h1 {
+  font-family: 'Bungee Shade', cursive;
+  font-size: 3em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+header h2 {
+  font-family: 'Varela Round', sans-serif;
+  font-size: 1.5em;
+  text-transform: capitalize;
+  margin: 0;
+}
+
 /* displaying products */
 div.product {
   display: inline-block;
-  max-width: 300px;
-  max-height: 300px;
+  width: 300px;
+  height: 300px;
+  border: 1px dashed black;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
 }
 
 div.product:hover {
@@ -10,17 +37,18 @@ div.product:hover {
 }
 
 div.product img {
-  min-width: 300px;
   height: 300px;
   display: block;
+  margin: auto;
 }
 
 /* showing results */
 div.result {
   display: inline-block;
   width: 300px;
-  height: 350px;
-  border: 1px solid black;
+  height: 300px;
+  border: 1px dashed black;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
 }
 
 div.result img {
@@ -30,8 +58,9 @@ div.result img {
 
 /* making charts */
 canvas#results-chart {
-  max-width: 800px;
-  max-height: 400px;
+  max-width: 900px;
+  max-height: 500px;
+  margin: 20px 0;
 }
 
 /* https://coolors.co/4b4e50-fdfdff-cbcabf-709ba6-637787
