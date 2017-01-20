@@ -30,18 +30,16 @@ Product.prototype.createClickableElement = function() {
   var divEl = document.createElement('div');
   divEl.setAttribute('class', 'product');
   divEl.setAttribute('id', this.id);
-  divEl.addEventListener('click', function() {
-    this.productClick(event);}, false); // doesn't seem to recognize "this" inside event listener function
   var productImageEl = document.createElement('img');
   productImageEl.setAttribute('src', this.filepath);
   divEl.appendChild(productImageEl);
   sectionTestEl.appendChild(divEl);
 };
-Product.prototype.productClick = function(event) { // doesn't seem to recognize "this" inside event listener function
-  this.clickCount++;
-  totalClicks++;
-  console.log(this.filename + ' was clicked');
-};
+// Product.prototype.removeImage = function() {
+//   var removeDiv = document.getElementById(this.id);
+//   var divParent = removeDiv.parentNode;
+//   divParent.removeChild(removeDiv);
+// };
 
 // Creates objects for every item in the images array
 images.forEach(function(image) {
@@ -70,10 +68,51 @@ function chooseProducts() {
 }
 
 // run functions
-chooseProducts();
+// chooseProducts();
+// populateAll();
 
 // Populates the DOM with clickable divs based on the chosenProducts array
-chosenProducts.forEach(function(index) {
-  console.log(products[index]);
-  products[index].createClickableElement();
-});
+function populateAll() {
+  chooseProducts();
+  chosenProducts.forEach(function(index) {
+    console.log(products[index]);
+    products[index].createClickableElement();
+  });
+}
+
+// Remove divs on click
+function removeAll() {
+  chosenProducts.forEach(function(index) {
+    var removeDiv = document.getElementById(products[index].id);
+    var divParent = removeDiv.parentNode;
+    divParent.removeChild(removeDiv);
+  });
+}
+
+// Add an event listener to divs
+function addClickEvent() {
+  chosenProducts.forEach(function(index) {
+    var div = document.getElementById(products[index].id);
+    div.addEventListener('click', function(event) {
+      totalClicks++;
+      console.log('total clicks ' + totalClicks);
+      products[index].clickCount++;
+      console.log(products[index].filename + ': click count ' + products[index].clickCount);
+      removeAll();
+    }, false);
+  });
+}
+
+// Function that runs the test
+function runTest() {
+  populateAll();
+  addClickEvent();
+  while (roundsNumber < totalClicks) {
+    populateAll();
+    addClickEvent();
+    break;
+  }
+  if (totalClicks === roundsNumber) {
+    console.log('done');
+  }
+}
