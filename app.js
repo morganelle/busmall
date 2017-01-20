@@ -25,6 +25,7 @@ function Product(filename, id, displayName) {
   this.displayName = displayName;
   this.displayCount = 0;
   this.clickCount = 0;
+  localStorage.setItem(this.id, this.clickCount);
 }
 
 Product.prototype.createImage = function(divDOM) {
@@ -40,8 +41,14 @@ Product.prototype.removeImage = function() {
   var imgContainerEl1 = removeImgEl.parentNode;
   imgContainerEl1.removeChild(removeImgEl);
 };
+Product.prototype.incrementStorage = function() {
+  var localClick = JSON.parse(localStorage.getItem(this.id));
+  localClick++;
+  localStorage.setItem(this.id, localClick);
+};
 Product.prototype.productClick = function(event) {
   this.clickCount++;
+  this.incrementStorage();
   totalClicks++;
   // clearObjects();
   // Chooses and displays new products while totalClicks is less than roundsCount
@@ -55,6 +62,7 @@ Product.prototype.productClick = function(event) {
     displayTotals(products);
     populateChartLabels(products);
     populateChartData(products);
+    localStorage.setItem(chartLabels, chartData);
     // chart start
     var chartOptions = {
       scales: {
