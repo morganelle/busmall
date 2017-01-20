@@ -20,7 +20,7 @@ var chartLabels = [];
 // Object constructor for products
 function Product(filename, id, displayName) {
   this.filename = filename;
-  this.filepath = 'assets/' + filename;
+  this.filepath = 'images/' + filename;
   this.id = id;
   this.displayName = displayName;
   this.displayCount = 0;
