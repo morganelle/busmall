@@ -72,6 +72,7 @@ Product.prototype.productClick = function(event) {
   }
   if (totalClicks === roundsCount) {
     displayTotals(products);
+    console.log(localStorage);
     populateChartLabels(products);
     populateChartData(products);
     // chart start
@@ -179,10 +180,25 @@ function displayTotals(productArray) {
   }
 }
 
+// // Create arrays for chart.js
+// function populateChartData(productArray) {
+//   for (var i = 0; i < productArray.length; i++) {
+//     var chartDatum = (productArray[i].clickCount);
+//     chartData.push(chartDatum);
+//   }
+// }
+// function populateChartLabels(productArray) {
+//   for (var i = 0; i < productArray.length; i++) {
+//     var chartDatum = productArray[i].id;
+//     chartLabels.push(chartDatum);
+//   }
+// }
+
 // Create arrays for chart.js
 function populateChartData(productArray) {
-  for (var i = 0; i < productArray.length; i++) {
-    var chartDatum = (productArray[i].clickCount);
+  for (var i = 0; i < localStorage.length; i++) {
+    var chartDatum = JSON.parse(localStorage.getItem(productArray[i].id));
+    console.log(chartDatum);
     chartData.push(chartDatum);
   }
 }
