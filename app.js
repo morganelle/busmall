@@ -25,7 +25,7 @@ function Product(filename, id, displayName) {
   this.displayName = displayName;
   this.displayCount = 0;
   this.clickCount = 0;
-  localStorage.setItem(this.id, this.clickCount);
+  // localStorage.setItem(this.id, this.clickCount); // currently recreates localStorage item every time this runs! REFACTOR
 }
 
 Product.prototype.createImage = function(divDOM) {
@@ -43,10 +43,22 @@ Product.prototype.removeImage = function() {
 };
 Product.prototype.incrementStorage = function() {
   var localClick = JSON.parse(localStorage.getItem(this.id));
+  console.log(localClick);
   localClick++;
+  console.log(localClick);
   localStorage.setItem(this.id, localClick);
 };
+Product.prototype.beginLocalStorage = function() {
+  if (localStorage.getItem(this.id)) {
+    console.log(this.id + ' already exists in localStorage');
+  }
+  else {
+    localStorage.setItem(this.id, this.clickCount);
+    console.log(this.id + ' created in exists localStorage');
+  }
+};
 Product.prototype.productClick = function(event) {
+  this.beginLocalStorage();
   this.clickCount++;
   this.incrementStorage();
   totalClicks++;
@@ -62,7 +74,6 @@ Product.prototype.productClick = function(event) {
     displayTotals(products);
     populateChartLabels(products);
     populateChartData(products);
-    localStorage.setItem(chartLabels, chartData);
     // chart start
     var chartOptions = {
       scales: {
