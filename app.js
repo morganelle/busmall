@@ -90,7 +90,7 @@ Product.prototype.productClick = function(event) {
       data: {
         labels: chartLabels,
         datasets: [{
-          label: 'Clicks per product',
+          label: 'Votes per product',
           data: chartData,
           backgroundColor: '#97B6BE',
           borderColor: '#709BA6',
