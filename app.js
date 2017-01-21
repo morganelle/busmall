@@ -20,11 +20,12 @@ var chartLabels = [];
 // Object constructor for products
 function Product(filename, id, displayName) {
   this.filename = filename;
-  this.filepath = 'assets/' + filename;
+  this.filepath = 'images/' + filename;
   this.id = id;
   this.displayName = displayName;
   this.displayCount = 0;
   this.clickCount = 0;
+  // localStorage.setItem(this.id, this.clickCount); // currently recreates localStorage item every time this runs! REFACTOR
 }
 
 Product.prototype.createImage = function(divDOM) {
@@ -40,8 +41,26 @@ Product.prototype.removeImage = function() {
   var imgContainerEl1 = removeImgEl.parentNode;
   imgContainerEl1.removeChild(removeImgEl);
 };
+Product.prototype.incrementStorage = function() {
+  var localClick = JSON.parse(localStorage.getItem(this.id));
+  console.log(localClick);
+  localClick++;
+  console.log(localClick);
+  localStorage.setItem(this.id, localClick);
+};
+Product.prototype.beginLocalStorage = function() {
+  if (localStorage.getItem(this.id)) {
+    console.log(this.id + ' already exists in localStorage');
+  }
+  else {
+    localStorage.setItem(this.id, this.clickCount);
+    console.log(this.id + ' created in exists localStorage');
+  }
+};
 Product.prototype.productClick = function(event) {
+  this.beginLocalStorage();
   this.clickCount++;
+  this.incrementStorage();
   totalClicks++;
   // clearObjects();
   // Chooses and displays new products while totalClicks is less than roundsCount
@@ -53,6 +72,7 @@ Product.prototype.productClick = function(event) {
   }
   if (totalClicks === roundsCount) {
     displayTotals(products);
+    console.log(localStorage);
     populateChartLabels(products);
     populateChartData(products);
     // chart start
@@ -160,10 +180,25 @@ function displayTotals(productArray) {
   }
 }
 
+// // Create arrays for chart.js
+// function populateChartData(productArray) {
+//   for (var i = 0; i < productArray.length; i++) {
+//     var chartDatum = (productArray[i].clickCount);
+//     chartData.push(chartDatum);
+//   }
+// }
+// function populateChartLabels(productArray) {
+//   for (var i = 0; i < productArray.length; i++) {
+//     var chartDatum = productArray[i].id;
+//     chartLabels.push(chartDatum);
+//   }
+// }
+
 // Create arrays for chart.js
 function populateChartData(productArray) {
-  for (var i = 0; i < productArray.length; i++) {
-    var chartDatum = (productArray[i].clickCount);
+  for (var i = 0; i < localStorage.length; i++) {
+    var chartDatum = JSON.parse(localStorage.getItem(productArray[i].id));
+    console.log(chartDatum);
     chartData.push(chartDatum);
   }
 }
