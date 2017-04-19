@@ -59,42 +59,7 @@ Product.prototype.productClick = function() {
   this.clickCount++;
   this.incrementStorage();
   totalClicks++;
-  // Chooses and displays new products while totalClicks is less than roundsCount
-  while (totalClicks < roundsCount) {
-    clearObjects(3);
-    runTest(3);
-    break;
-  }
-  if (totalClicks === roundsCount) {
-    displayTotals(products);
-    populateChartLabels(products);
-    populateChartData(products);
-    // chart start
-    var chartOptions = {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
-    };
-    var myFirstChart = new Chart(context, {
-      type: 'horizontalBar',
-      data: {
-        labels: chartLabels,
-        datasets: [{
-          label: 'Votes per product',
-          data: chartData,
-          backgroundColor: '#97B6BE',
-          borderColor: '#709BA6',
-          borderWidth: 1
-        }]
-      },
-      options: chartOptions
-    });
-    // end chart
-  }
+  gameEnd(totalClicks, roundsCount);
 };
 
 // Product template
@@ -193,8 +158,46 @@ function populateChartLabels(productArray) {
   }
 }
 
+function gameEnd(clicks, rounds) {
+  while (clicks < rounds) {
+    clearObjects(3);
+    runTest(3);
+    break;
+  }
+  if (clicks === rounds) {
+    displayTotals(products);
+    populateChartLabels(products);
+    populateChartData(products);
+    // chart start
+    var chartOptions = {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    };
+    var myFirstChart = new Chart(context, {
+      type: 'horizontalBar',
+      data: {
+        labels: chartLabels,
+        datasets: [{
+          label: 'Votes per product',
+          data: chartData,
+          backgroundColor: '#97B6BE',
+          borderColor: '#709BA6',
+          borderWidth: 1
+        }]
+      },
+      options: chartOptions
+    });
+    // end chart
+  }
+}
+
 function beginTest(count) {
-  localStorage.clear();
+  // localStorage.clear();
   createDivs(count);
   divEls[0].addEventListener('click', function() {products[chosenProducts[0]].productClick(event);}, false);
   divEls[1].addEventListener('click', function() {products[chosenProducts[1]].productClick(event);}, false);
